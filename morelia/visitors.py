@@ -153,6 +153,10 @@ class TestVisitor(IVisitor):
             kwargs['_labels'] = node.get_labels()
         if '_text' in arglist:
             kwargs['_text'] = node.payload
+        if '_data' in arglist:
+            kwargs['_data'] = getattr(node, 'data', None)
+        if '_node' in arglist:
+            kwargs['_node'] = node
         method(*args, **kwargs)
 
     def permute_schedule(self, node):

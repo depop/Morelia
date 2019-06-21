@@ -265,12 +265,17 @@ class Step(Morelia):
             for x in range(0, len(row_indices)):
                 table = self.parent.steps[x].steps
 
+                rows = list(moves.filter(lambda step: isinstance(step, Row), table))
                 try:
-                    row = next(moves.filter(lambda step: isinstance(step, Row), table))
-                except StopIteration:
+                    header = rows[0]
+                except IndexError:
                     pass
                 else:
-                    for q, title in enumerate(row.harvest()):
+                    columns = header.harvest()
+                    row = rows[row_indices[x] + 1]
+                    self.data = dict(zip(columns, row.harvest()))
+
+                    for q, title in enumerate(columns):
                         self.replace_replitron(x, q, row_indices, table, title, replitron)
 
         return self.copy
